@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MiMy</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E %3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%23f6d6de%22/%3E %3Cpath d=%22M32 22c13-3 22 6 20 18-2 12-11 19-20 20-9-1-18-8-20-20-2-12 7-21 20-18Z%22 fill=%22%23f08aa0%22 stroke=%22%23c2416e%22 stroke-width=%222.4%22/%3E %3Cpath d=%22M32 24c-5-7-12-7-15-4 5 0 8 2 10 4-6 0-9 2-10 5 6-2 10-1 15 0 5-1 9-2 15 0-1-3-4-5-10-5 2-2 5-4 10-4-3-3-10-3-15 4Z%22 fill=%22%238cc596%22 stroke=%22%235f9a6a%22 stroke-width=%221.8%22 stroke-linejoin=%22round%22/%3E %3Cg fill=%22%23fff6e0%22%3E%3Cellipse cx=%2225%22 cy=%2237%22 rx=%221.8%22 ry=%222.6%22/%3E%3Cellipse cx=%2236%22 cy=%2235%22 rx=%221.8%22 ry=%222.6%22/%3E%3Cellipse cx=%2242%22 cy=%2244%22 rx=%221.8%22 ry=%222.6%22/%3E%3Cellipse cx=%2230%22 cy=%2247%22 rx=%221.8%22 ry=%222.6%22/%3E%3Cellipse cx=%2222%22 cy=%2246%22 rx=%221.6%22 ry=%222.3%22/%3E%3C/g%3E %3Cpath d=%22M22 14 21 4l6 5 5-7 5 7 6-5-1 10Z%22 fill=%22%23ffe08f%22 stroke=%22%23c2416e%22 stroke-width=%222%22 stroke-linejoin=%22round%22/%3E %3C/svg%3E">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<meta name="theme-color" content="#f6d6de">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blush:#f6d6de;      /* page background */
+  --paper:#fffafb;      /* the sheet */
+  --rose:#c2416e;       /* pen ink */
+  --rose-soft:#f3b7c8;
+  --lilac:#cdbff0;      /* washi tape */
+  --ink:#3d2a30;        /* body text */
+  --ink-2:#7a5f68;
+  --line:#f1d9e0;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--blush);color:var(--ink);font:400 17px/1.65 "Figtree",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:4px}
+.hand{font-family:"Gaegu",cursive}
+
+/* ---------- hero ---------- */
+.hero{max-width:860px;margin:0 auto;padding:clamp(3.5rem,9vw,5.5rem) 1.5rem 0;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:2.5rem}
+.hero .arrow{grid-column:1/-1}
+.pol{background:#fff;padding:10px 10px 46px;margin:0;position:relative;box-shadow:0 2px 0 rgba(120,40,70,.05),0 16px 30px -18px rgba(120,40,70,.45)}
+.pol img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;background:#f3e4e8}
+.pol figcaption{position:absolute;left:8px;right:8px;bottom:9px;text-align:center;font-family:"Gaegu",cursive;font-weight:700;font-size:1.25rem;line-height:1.1;color:var(--ink)}
+.pol .tp{position:absolute;top:-13px;left:50%;width:96px;height:26px;margin-left:-48px;transform:rotate(-4deg);background:var(--rose-soft);opacity:.85;z-index:2;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px)}
+.pol .tp.l{background-color:var(--lilac);transform:rotate(5deg)}
+.hero-pic{width:clamp(190px,27vw,250px);transform:rotate(5deg);animation:sway 6s ease-in-out infinite alternate}
+@keyframes sway{to{transform:rotate(2.5deg) translateY(-4px)}}
+.snaps{display:flex;justify-content:center;align-items:flex-start;padding:.5rem 0 .5rem}
+.snaps .pol{width:min(46%,250px)}
+.snaps .s1{transform:rotate(-4deg);z-index:1}
+.snaps .s2{transform:rotate(3.5deg);margin-left:-12px;margin-top:2.2rem}
+.snaps .pol:hover{z-index:3}
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr}
+  .hero-pic{justify-self:center;width:min(62vw,240px);margin-top:1.8rem}
+  .hero .arrow{margin-left:22%}
+  .snaps .pol figcaption{font-size:.98rem}
+}
+.name{margin:0;font-family:"Gaegu",cursive;font-weight:700;color:var(--rose);font-size:clamp(7rem,30vw,14rem);line-height:.8;letter-spacing:-.02em;transform:rotate(-4deg);transform-origin:left bottom;display:inline-block;position:relative}
+.name .crown{position:absolute;width:.42em;left:.62em;top:-.32em;transform:rotate(8deg)}
+.hero .sub{font-family:"Gaegu",cursive;font-size:clamp(1.45rem,4.4vw,1.9rem);line-height:1.25;margin:1.6rem 0 0;max-width:24ch;color:var(--ink)}
+.hero .berry{position:absolute;right:-30px;top:-34px;width:clamp(56px,9vw,80px);z-index:3}
+.hero .arrow{display:block;width:90px;margin:.6rem 0 0 40%;color:var(--rose)}
+
+/* ---------- sheet ---------- */
+.sheet{max-width:720px;margin:1rem auto 4rem;background:var(--paper);position:relative;
+  padding:clamp(2.2rem,6vw,4rem) clamp(1.4rem,6vw,4rem) clamp(2.5rem,6vw,4rem);
+  box-shadow:0 1px 0 rgba(120,40,70,.06),0 18px 40px -22px rgba(120,40,70,.35);
+  background-image:radial-gradient(var(--line) 1.1px,transparent 1.2px);background-size:24px 24px;background-position:12px 12px}
+@media (max-width:760px){.sheet{margin-inline:.75rem}}
+.tape{position:absolute;width:120px;height:30px;top:-14px;background:var(--lilac);opacity:.85;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px)}
+.tape.l{left:28px;transform:rotate(-6deg)} .tape.r{right:34px;transform:rotate(5deg);background-color:var(--rose-soft)}
+
+.block + .block{margin-top:clamp(3rem,8vw,4.5rem)}
+h2{font-family:"Gaegu",cursive;font-weight:700;color:var(--rose);font-size:clamp(2rem,6vw,2.6rem);line-height:1;margin:0 0 .5rem}
+.help{color:var(--ink-2);margin:0 0 1.4rem;max-width:52ch}
+p{margin:0 0 1rem;max-width:60ch}
+
+/* letter */
+.letter{font-family:"Gaegu",cursive;font-size:1.45rem;line-height:1.45}
+.letter p{max-width:none}
+.letter .hi{font-weight:700;color:var(--rose);font-size:1.7rem}
+.letter .from{text-align:right;color:var(--rose);font-weight:700;margin-top:1.4rem}
+
+/* plan checklist */
+.plan{list-style:none;margin:0;padding:0;font-family:"Gaegu",cursive;font-size:1.45rem;line-height:1.3}
+.plan li{display:flex;gap:.8rem;align-items:flex-start;padding:.35rem 0}
+.plan svg{flex:none;width:26px;height:26px;margin-top:.15rem;color:var(--rose)}
+.ps{display:flex;align-items:center;gap:.7rem;margin:1.4rem 0 0;max-width:none;font-family:"Gaegu",cursive;font-weight:700;font-size:1.4rem;line-height:1.25;color:var(--rose);transform:rotate(-1.2deg)}
+.ps svg{width:48px;height:48px;flex:none;transform:rotate(-8deg)}
+.plan small{display:block;font-family:"Figtree";font-size:.92rem;color:var(--ink-2);line-height:1.4}
+
+/* calendar */
+.cal-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:2rem;align-items:start}
+@media (max-width:640px){.cal-wrap{grid-template-columns:1fr}}
+.cal-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.6rem}
+.cal-top .m{font-family:"Gaegu",cursive;font-weight:700;font-size:1.7rem;color:var(--ink)}
+.cal-top button{border:0;background:none;cursor:pointer;color:var(--rose);font-family:"Gaegu";font-size:1.25rem;padding:.2rem .4rem}
+.cal-top button[disabled]{visibility:hidden}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;row-gap:.2rem}
+.dow{font-size:.78rem;color:var(--ink-2);padding-bottom:.3rem}
+.day{position:relative;aspect-ratio:1;display:grid;place-items:center;border:0;background:none;padding:0;font-size:1rem;color:#c9b3ba;cursor:default}
+.day.free{color:var(--ink);cursor:pointer;font-weight:600}
+.day .ring{position:absolute;inset:6%;width:88%;height:88%;color:var(--rose);pointer-events:none;overflow:visible}
+.day .ring path{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.day.picked{color:#fff}
+.day.picked .ring path{fill:var(--rose);stroke:var(--rose)}
+.day span{position:relative}
+.day.bd::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:var(--rose);bottom:8%;left:50%;transform:translateX(-50%)}
+.day.picked.bd::after{background:#fff}
+.day.free:hover .ring{transform:rotate(-6deg) scale(1.05)}
+.legend{font-size:.85rem;color:var(--ink-2);margin-top:.8rem}
+
+.choice{font-family:"Gaegu",cursive;font-size:1.5rem;line-height:1.2;color:var(--ink);min-height:3.6rem;margin:0 0 1.2rem}
+.choice b{color:var(--rose)}
+.times{display:flex;flex-direction:column;gap:.15rem}
+.times label{display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.25rem 0}
+.times input{appearance:none;width:20px;height:20px;border:2px solid var(--rose);border-radius:50%;margin:0;flex:none;display:grid;place-items:center;cursor:pointer}
+.times input:checked::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--rose)}
+.q{font-weight:600;margin:0 0 .4rem}
+
+/* wishlist */
+.adder{display:flex;gap:.5rem;border-bottom:2px solid var(--rose-soft);padding-bottom:.3rem}
+.adder input{flex:1;min-width:0;border:0;background:transparent;font-family:"Gaegu",cursive;font-size:1.5rem;padding:.2rem 0;outline:none}
+.adder input::placeholder{color:#cfaab6}
+.adder button,.btn-link{border:0;background:none;color:var(--rose);font-weight:600;cursor:pointer;padding:.3rem .2rem}
+.ideas{margin:1rem 0 0;font-size:.95rem;color:var(--ink-2)}
+.ideas button{border:0;background:none;padding:0;margin:0 .1rem;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--rose-soft);text-decoration-thickness:2px;text-underline-offset:3px}
+.ideas button:hover{color:var(--rose)}
+.ideas button.on{color:#c9b3ba;text-decoration:line-through}
+.wishes{list-style:none;margin:1.4rem 0 0;padding:0}
+.wishes li{display:flex;align-items:center;gap:.8rem;padding:.45rem 0;border-bottom:1px dashed var(--line);font-family:"Gaegu",cursive;font-size:1.45rem;line-height:1.2}
+.wishes .t{flex:1;min-width:0;overflow-wrap:anywhere}
+.hearts{display:flex;flex:none}
+.hearts button{border:0;background:none;cursor:pointer;padding:2px;line-height:0}
+.hearts svg{width:20px;height:20px}
+.hearts path{fill:none;stroke:var(--rose);stroke-width:2}
+.hearts .on path{fill:var(--rose)}
+.x{border:0;background:none;cursor:pointer;color:#c9b3ba;font-size:1.3rem;line-height:1;padding:.2rem}
+.x:hover{color:var(--rose)}
+.none{font-family:"Gaegu",cursive;font-size:1.3rem;color:#c9b3ba;border-bottom:0!important}
+textarea{width:100%;min-height:120px;border:2px solid var(--line);border-radius:6px;background:#fff;padding:.8rem 1rem;resize:vertical;font-family:"Gaegu",cursive;font-size:1.35rem;line-height:1.35;outline:none}
+textarea:focus{border-color:var(--rose-soft)}
+label.q{display:block;margin-top:2rem}
+
+.send{margin-top:2.4rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.btn{border:0;cursor:pointer;background:var(--rose);color:#fff;font-weight:600;font-size:1rem;padding:.85rem 1.6rem;border-radius:999px;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.note{color:var(--ink-2);font-size:.95rem}
+.note.warn{color:var(--rose)}
+
+.done{display:none;margin-top:2rem;border:2px solid var(--rose-soft);border-radius:8px;padding:1.4rem 1.4rem 1.2rem;background:#fff;position:relative}
+.done.show{display:block}
+.done .hand{font-size:1.8rem;color:var(--rose);font-weight:700;margin:0 0 .3rem}
+.done pre{white-space:pre-wrap;font:inherit;font-size:.92rem;background:#fdf3f6;border-radius:6px;padding:.9rem 1rem;margin:1rem 0;max-height:260px;overflow:auto}
+
+/* owner */
+#owner{display:none;margin-top:4rem;padding-top:2.4rem;border-top:2px dashed var(--rose-soft)}
+#owner.show{display:block}
+.resp{margin-top:1.2rem;font-size:.95rem}
+.resp dl{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1.2rem;margin:0}
+.resp dt{color:var(--ink-2)}
+.resp dd{margin:0;white-space:pre-wrap}
+
+/* doodles */
+.dd *{stroke:var(--rose);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.dd .nf{fill:none}
+
+/* idea sticker sheet */
+.stickers{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem .4rem;margin:0 0 1.6rem}
+.stk{position:relative;border:0;background:none;cursor:pointer;padding:.6rem .3rem .4rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;border-radius:14px;transition:transform .2s,background .2s}
+.stk svg.dd{width:68px;height:68px;transition:transform .25s}
+.stk span{font-family:"Gaegu",cursive;font-size:1.15rem;line-height:1.1;text-align:center;color:var(--ink)}
+.stk:hover svg.dd{transform:rotate(-8deg) scale(1.06)}
+.stk.on{background:#fdeaf0}
+.stk.on::after{content:"";position:absolute;top:6px;right:12px;width:22px;height:22px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z' fill='%23c2416e'/%3E%3C/svg%3E");animation:stamp .3s ease}
+@keyframes stamp{from{transform:scale(1.8);opacity:0}}
+@media (max-width:700px){.stickers{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:480px){.stickers{grid-template-columns:repeat(3,1fr)}.stk svg.dd{width:54px;height:54px}.stk span{font-size:1.02rem}}
+.wishes .ic{width:34px;height:34px;flex:none}
+.or{font-weight:600;margin:0 0 .4rem}
+.listh{font-weight:600;margin:1.8rem 0 0}
+
+/* ---------- surprise intro ---------- */
+body.locked{overflow:hidden}
+#intro{position:fixed;inset:0;z-index:50;background:var(--blush);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;padding:1.5rem;text-align:center;cursor:pointer;
+  background-image:radial-gradient(#efc3cf 1.1px,transparent 1.2px);background-size:24px 24px;transition:transform 1s cubic-bezier(.7,0,.3,1)}
+#intro.lift{transform:translateY(-104%)}
+#intro .msg{font-family:"Gaegu",cursive;font-size:clamp(1.6rem,5.5vw,2.3rem);line-height:1.2;color:var(--ink);margin:0;min-height:2.6em}
+#intro .msg b{color:var(--rose);font-weight:700}
+#intro .msg.big{font-size:clamp(2.6rem,10vw,4.4rem);color:var(--rose);font-weight:700;animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(.4) rotate(-6deg);opacity:0}}
+#gift{border:0;background:none;padding:0;cursor:pointer;width:min(280px,68vw)}
+#gift:focus:not(:focus-visible){outline:none}
+#gift svg{width:100%;height:auto;overflow:visible}
+#gift svg *{transform-box:fill-box}
+#box,#lid{transform-origin:50% 100%}
+#intro:not(.out) #gift svg{animation:wobble 2.4s ease-in-out infinite}
+@keyframes wobble{0%,60%,100%{transform:rotate(0)}66%{transform:rotate(-5deg)}72%{transform:rotate(4deg)}78%{transform:rotate(-3deg)}84%{transform:rotate(2deg)}}
+#bow{transform-origin:50% 100%}
+#card{transform:translateY(0);opacity:0}
+.bl{opacity:0;transform:translateY(60px)}
+.out #bow{animation:bowoff .7s cubic-bezier(.3,.6,.4,1) forwards}
+@keyframes bowoff{30%{transform:scale(1.35)}100%{transform:translate(90px,-160px) rotate(220deg) scale(.6);opacity:0}}
+.out #lid{animation:lidoff .9s cubic-bezier(.3,.6,.4,1) .25s forwards}
+@keyframes lidoff{20%{transform:translateY(8px)}100%{transform:translate(-80px,-190px) rotate(-38deg);opacity:0}}
+.out #card{animation:cardup .9s cubic-bezier(.3,1.6,.5,1) .55s forwards}
+@keyframes cardup{from{opacity:1;transform:translateY(0)}to{opacity:1;transform:translateY(-96px) rotate(-4deg)}}
+.out .bl{animation:rise 2.6s cubic-bezier(.4,0,.6,1) forwards}
+.out .b1{animation-delay:.9s}.out .b2{animation-delay:1.05s}.out .b3{animation-delay:.8s}
+@keyframes rise{0%{opacity:0;transform:translateY(60px)}12%{opacity:1}100%{opacity:1;transform:translateY(-130vh) rotate(6deg)}}
+.hint{font-size:.9rem;color:var(--ink-2);margin:0}
+.bit{position:fixed;bottom:-60px;z-index:60;pointer-events:none;width:var(--w);opacity:0;animation:up var(--t) cubic-bezier(.3,.2,.5,1) var(--d) forwards}
+@keyframes up{8%{opacity:1}100%{opacity:1;transform:translate(var(--x),-118vh) rotate(var(--r))}}
+
+/* ambient background doodles */
+.amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.amb i{position:absolute;display:block;width:var(--w);animation:bob var(--t) ease-in-out var(--d) infinite alternate}
+.amb i svg{width:100%;height:auto;display:block}
+.amb i.tw{animation:tw var(--t) ease-in-out var(--d) infinite}
+@keyframes bob{from{transform:translateY(-8px) rotate(calc(var(--r) * -1))}to{transform:translateY(10px) rotate(var(--r))}}
+@keyframes tw{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1)}}
+.amb i.drift{animation:drift var(--t) linear var(--d) infinite;bottom:-80px;top:auto!important}
+@keyframes drift{0%{transform:translate(0,0)}25%{transform:translate(14px,-30vh)}50%{transform:translate(-10px,-60vh)}75%{transform:translate(12px,-90vh)}100%{transform:translate(0,-125vh)}}
+.hero,.sheet,footer{position:relative;z-index:1}
+.hero .berry{animation:swing 3.2s ease-in-out infinite alternate;transform-origin:50% 0}
+@keyframes swing{from{transform:rotate(4deg)}to{transform:rotate(18deg)}}
+.name .crown{animation:crown 4s ease-in-out infinite}
+@keyframes crown{0%,80%,100%{transform:rotate(8deg)}86%{transform:rotate(-6deg) translateY(-4px)}92%{transform:rotate(12deg)}}
+.name.hello{animation:hello .8s cubic-bezier(.3,1.5,.5,1)}
+@keyframes hello{from{transform:rotate(-14deg) scale(.6);opacity:0}}
+
+footer{text-align:center;padding:0 1.5rem 3rem;font-family:"Gaegu",cursive;font-size:1.3rem;color:var(--rose)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.bit,.amb{display:none}.out #lid,.out #bow{opacity:0}.out #card{opacity:1;transform:translateY(-96px)}}
+</style>
+</head>
+<body class="locked">
+<div id="intro" role="dialog" aria-modal="true" aria-label="A little surprise">
+  <p class="msg" id="introMsg">Something for you, <b>MiMy</b>…</p>
+  <button id="gift" type="button" aria-label="Open the present">
+    <svg viewBox="0 0 200 220" class="dd" aria-hidden="true">
+      <g id="balloons">
+        <g class="bl b1"><path d="M70 120c-4 20 6 30 0 50" class="nf" style="stroke-width:1.6"/><ellipse cx="70" cy="96" rx="17" ry="21" fill="#f6c2d0"/><path d="M67 117h6l-3 4Z" fill="#f6c2d0"/></g>
+        <g class="bl b2"><path d="M130 116c5 20-6 30 0 54" class="nf" style="stroke-width:1.6"/><ellipse cx="130" cy="92" rx="17" ry="21" fill="#ddd2f7"/><path d="M127 113h6l-3 4Z" fill="#ddd2f7"/></g>
+        <g class="bl b3"><path d="M100 112c-3 22 4 32 0 58" class="nf" style="stroke-width:1.6"/><ellipse cx="100" cy="86" rx="18" ry="22" fill="#ffe08f"/><path d="M97 108h6l-3 4Z" fill="#ffe08f"/></g>
+      </g>
+      <g id="card">
+        <rect x="56" y="104" width="88" height="62" rx="5" fill="#fff"/>
+        <text x="100" y="132" text-anchor="middle" style="font-family:Gaegu,cursive;font-weight:700;font-size:19px;fill:#c2416e;stroke:none">you're</text>
+        <text x="100" y="153" text-anchor="middle" style="font-family:Gaegu,cursive;font-weight:700;font-size:19px;fill:#c2416e;stroke:none">invited ♡</text>
+      </g>
+      <g id="box">
+        <rect x="40" y="112" width="120" height="90" rx="6" fill="#f6c2d0"/>
+        <rect x="92" y="112" width="16" height="90" fill="#ddd2f7"/>
+        <g style="stroke:none" fill="#fff"><circle cx="58" cy="132" r="3"/><circle cx="74" cy="158" r="3"/><circle cx="56" cy="182" r="3"/><circle cx="128" cy="136" r="3"/><circle cx="144" cy="164" r="3"/><circle cx="126" cy="186" r="3"/></g>
+      </g>
+      <g id="lid">
+        <rect x="32" y="88" width="136" height="28" rx="6" fill="#fff"/>
+        <rect x="92" y="88" width="16" height="28" fill="#ddd2f7"/>
+        <g id="bow">
+          <path d="M100 88C86 64 62 70 68 82c4 8 22 8 32 6Z" fill="#ddd2f7"/>
+          <path d="M100 88c14-24 38-18 32-6-4 8-22 8-32 6Z" fill="#ddd2f7"/>
+          <circle cx="100" cy="86" r="7" fill="#fff"/>
+        </g>
+      </g>
+      <ellipse cx="100" cy="210" rx="78" ry="6" fill="#efc3cf" style="stroke:none"/>
+    </svg>
+  </button>
+  <p class="hint" id="introHint">tap the present</p>
+</div>
+
+<div class="amb" id="amb" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="hero-l">
+    <h1 class="name">
+    <svg class="crown" viewBox="0 0 60 40" aria-hidden="true" fill="none" stroke="#c2416e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 34 4 10l14 12L30 4l12 18 14-12-2 24Z"/><path d="M8 34h44"/><circle cx="30" cy="4" r="2" fill="#c2416e"/></svg>
+    MiMy
+    </h1>
+    <p class="sub" id="sub"></p>
+  </div>
+  <figure class="pol hero-pic">
+    <span class="tp" aria-hidden="true"></span>
+    <img src="img/canal.jpg" alt="MiMy smiling by a canal in a pink floral top" width="720" height="900">
+    <figcaption>the birthday girl</figcaption>
+    <svg class="berry" viewBox="0 0 100 110" aria-hidden="true">
+    <path d="M50 28C78 22 96 40 90 64 84 88 64 104 50 106 36 104 16 88 10 64 4 40 22 22 50 28Z" fill="#f08aa0" stroke="#c2416e" stroke-width="2.5"/>
+    <g fill="#fff6e0"><ellipse cx="34" cy="50" rx="3" ry="4.5"/><ellipse cx="54" cy="46" rx="3" ry="4.5"/><ellipse cx="71" cy="54" rx="3" ry="4.5"/><ellipse cx="42" cy="71" rx="3" ry="4.5"/><ellipse cx="62" cy="74" rx="3" ry="4.5"/><ellipse cx="51" cy="91" rx="3" ry="4.5"/><ellipse cx="25" cy="66" rx="2.6" ry="4"/></g>
+    <path d="M50 32C40 18 26 20 22 24c10 0 16 4 20 8-10-2-18 2-20 6 10-3 20-2 28 0 8-2 18-3 28 0-2-4-10-8-20-6 4-4 10-8 20-8-4-4-18-6-28 8Z" fill="#8cc596" stroke="#5f9a6a" stroke-width="2"/>
+  </svg>
+  </figure>
+  <svg class="arrow" viewBox="0 0 90 70" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M8 6c30-2 54 14 58 50"/><path d="M54 46l12 12 10-15"/></svg>
+</header>
+
+<main class="sheet">
+  <span class="tape l" aria-hidden="true"></span><span class="tape r" aria-hidden="true"></span>
+
+  <section class="block letter" aria-label="A note for you" id="letter"></section>
+
+  <section class="block snaps" aria-label="Photos of you">
+    <figure class="pol s1"><span class="tp" aria-hidden="true"></span><img src="img/wish1.jpg" alt="MiMy smiling with her eyes closed, hands together over a candlelit birthday cake" width="720" height="900" loading="lazy"><figcaption>making a wish…</figcaption></figure>
+    <figure class="pol s2"><span class="tp l" aria-hidden="true"></span><img src="img/wish2.jpg" alt="MiMy looking down at a candlelit birthday cake" width="720" height="900" loading="lazy"><figcaption>…and another one</figcaption></figure>
+  </section>
+
+  <section class="block" aria-labelledby="planH">
+    <h2 id="planH">The plan</h2>
+    <ul class="plan" id="plan"></ul>
+    <p class="ps" id="ps"></p>
+  </section>
+
+  <section class="block" aria-labelledby="dayH">
+    <h2 id="dayH">When are you free?</h2>
+    <p class="help">I've circled the days I can do. Tap one, then pick a time.</p>
+    <div class="cal-wrap">
+      <div>
+        <div class="cal-top">
+          <button type="button" id="prev" aria-label="Previous month">‹ prev</button>
+          <span class="m" id="month" aria-live="polite"></span>
+          <button type="button" id="next" aria-label="Next month">next ›</button>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="legend">The dot is your birthday.</div>
+      </div>
+      <div>
+        <p class="choice" id="choice" aria-live="polite"></p>
+        <p class="q" id="timeQ">What time?</p>
+        <div class="times" id="times" role="radiogroup" aria-labelledby="timeQ"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="wishH">
+    <h2 id="wishH">Wishlist</h2>
+    <p class="help">Tap anything you'd like, or write your own below. Then fill in the hearts on the ones you'd love most.</p>
+    <div class="stickers" id="stickers" role="group" aria-label="Gift ideas"></div>
+    <p class="or">Or write your own</p>
+    <div class="adder">
+      <label for="wishIn" class="sr" style="position:absolute;left:-9999px">Add a wish</label>
+      <input id="wishIn" maxlength="140" placeholder="write something…" autocomplete="off">
+      <button type="button" id="addBtn">Add</button>
+    </div>
+    <p class="listh">Your wishlist</p>
+    <ul class="wishes" id="wishes" style="margin-top:.4rem"></ul>
+
+    <label class="q" for="extra">Anything else I should know?</label>
+    <textarea id="extra" maxlength="1000" placeholder="sizes, colours you love, things you already have…"></textarea>
+
+    <div class="send">
+      <button class="btn" id="sendBtn" type="button">Send to me</button>
+      <span class="note" id="sendNote"></span>
+    </div>
+
+    <div class="done" id="done" role="status">
+      <p class="hand" id="doneTitle">Got it ♡</p>
+      <p id="doneMsg" style="margin:0"></p>
+      <pre id="summary"></pre>
+      <button class="btn-link" type="button" id="copyBtn">Copy this</button>
+    </div>
+  </section>
+
+  <section id="owner" aria-labelledby="ownerH">
+    <h2 id="ownerH">Her answers</h2>
+    <p class="help">Only you can see this part.</p>
+    <div id="resp">Loading…</div>
+  </section>
+</main>
+
+<footer id="foot"></footer>
+
+<script>
+/* ---------- edit these ---------- */
+const CONFIG = {
+  friend: "MiMy",
+  nickname: "Primmy",
+  from: "me",                    // your name
+  birthday: "2026-11-27",
+  free: ["2026-11-17","2026-11-18","2026-11-20","2026-11-24","2026-11-25","2026-11-28","2026-11-30","2026-12-01","2026-12-02","2026-12-04","2026-12-06"],
+  times: ["Morning", "Afternoon", "Evening", "The whole day"],
+  sub: "It's your birthday on the 27th and I'm taking you out. No excuses.",
+  letter: [
+    "It's been a while since we've had a little day just for ourselves, hasn't it?",
+    "I'd love to take you out for a day, just you and me. We could grab something yummy to eat, wander around, take some silly photobooth pictures, chat about absolutely everything and nothing, and find a sweet little spot for cake.",
+    "We can dress up, look pretty, take lots of cute pictures :). Just a lovely day together and some memories to keep.",
+    "Let me know which day works best for you, and if there's anything you've been wanting to do lately. I'd love to hear your ideas!",
+    "Looking forward to it."
+  ],
+  plan: [
+    ["Have dinner/brunch somewhere pretty", "My treat. You choose the place."],
+    ["Wander round the shops", "No rush. We'll try on silly things."],
+    ["Photobooth", "At least two strips, one each."],
+    ["Cake and a wish", "Candles included."]
+  ],
+  ideas: [["Satin hair bows","bow"],["A peony candle","candle"],["A cute phone case","phone"],["Silky pyjamas","pjs"],["Lip gloss","gloss"],["A plushie","bear"],
+          ["A new perfume","perfume"],["A pretty notebook","notebook"],["A charm bracelet","bracelet"],["Flowers","flowers"],["Anything strawberry","berry"],["Bubble tea date","boba"],
+          ["Hair claw clips","clip"],["A cosy cardigan","cardigan"],["Fluffy socks","socks"],["Nail polish set","nails"],["A mini handbag","bag"],["Concert tickets","tickets"],
+          ["Silk scrunchies","scrunchie"],["A cute mug","mug"],["A pocket mirror","mirror"],["Dainty earrings","earrings"],["A cosy blanket","blanket"],["A jewellery box","jbox"]]
+};
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const el = (t, p = {}) => Object.assign(document.createElement(t), p);
+const pad = n => String(n).padStart(2, "0");
+const key = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = k => { const [y,m,d] = k.split("-").map(Number); return new Date(y, m-1, d); };
+const long = k => parse(k).toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
+const ls = {
+  get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+const RING = ["M8 22C6 10 20 3 34 4c14 1 22 10 20 22-2 12-16 18-30 16C12 40 5 32 9 20c2-6 7-10 13-12",
+              "M10 18C14 7 28 2 40 6c11 4 16 14 12 25-4 10-18 14-30 11C10 39 4 30 7 21c2-6 8-10 15-12",
+              "M7 24C7 12 18 5 31 5c14 0 23 9 22 20-1 12-13 18-27 17C13 41 5 34 8 22c1-5 6-9 12-11"];
+const heartPath = "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z";
+
+
+const P = "#f6c2d0", L = "#ddd2f7", W = "#fff", Y = "#ffe08f", G = "#a9d8b0";
+const BERRY_S = `<path d="M32 22c12-3 20 5 18 16-2 11-10 18-18 19-8-1-16-8-18-19-2-11 6-19 18-16Z" fill="#f08aa0"/><path d="M32 23c-4-6-10-6-13-4 4 0 7 2 9 4-5 0-8 2-9 4 5-2 9-1 13 0 4-1 8-2 13 0-1-2-4-4-9-4 2-2 5-4 9-4-3-2-9-2-13 4Z" fill="${G}"/><g style="stroke:none" fill="#fff6e0"><circle cx="26" cy="34" r="1.6"/><circle cx="36" cy="32" r="1.6"/><circle cx="40" cy="42" r="1.6"/><circle cx="30" cy="45" r="1.6"/></g>`;
+const DOODLE = {
+  bow:`<path d="M32 30C22 18 8 20 10 30s14 10 22 2Z" fill="${P}"/><path d="M32 30c10-12 24-10 22 0s-14 10-22 2Z" fill="${P}"/><path d="M29 34l-8 18 6-3 3 5 3-19M35 34l8 18-6-3-3 5-3-19" fill="${P}"/><circle cx="32" cy="31" r="5" fill="${W}"/>`,
+  candle:`<path d="M32 21v-5" class="nf"/><path d="M32 4c5 6 5 9 0 12-5-3-5-6 0-12Z" fill="${Y}"/><rect x="15" y="22" width="34" height="34" rx="6" fill="${L}"/><rect x="21" y="32" width="22" height="14" rx="2" fill="${W}"/><path d="M28 39c1-3 4-3 4 0 0-3 3-3 4 0 0 3-4 5-4 5s-4-2-4-5Z" fill="${P}"/>`,
+  camera:`<rect x="9" y="18" width="46" height="34" rx="8" fill="${P}"/><rect x="40" y="12" width="10" height="7" rx="2" fill="${W}"/><circle cx="32" cy="35" r="11" fill="${W}"/><circle cx="32" cy="35" r="5" fill="${L}"/><rect x="14" y="23" width="8" height="5" rx="1.5" fill="${Y}"/>`,
+  pjs:`<path d="M21 12l-11 8 5 10 6-3v27h22V27l6 3 5-10-11-8c-3 4-6 6-11 6s-8-2-11-6Z" fill="${L}"/><path d="M21 12c3 6 7 9 11 9s8-3 11-9" class="nf"/><g style="stroke:none" fill="#c2416e"><circle cx="32" cy="30" r="1.6"/><circle cx="32" cy="38" r="1.6"/><circle cx="32" cy="46" r="1.6"/></g><path d="M38 34c1-2 3-2 3 0 0-2 2-2 3 0 0 2-3 3-3 3s-3-1-3-3Z" fill="${P}"/>`,
+  gloss:`<rect x="25" y="26" width="14" height="30" rx="4" fill="${P}"/><rect x="24" y="8" width="16" height="19" rx="4" fill="${W}"/><path d="M29 32v18" class="nf" style="stroke:#fff;stroke-width:3"/><path d="M48 14l2 4 4 1-4 2-1 4-2-4-4-1 4-2Z" fill="${Y}"/>`,
+  bear:`<circle cx="19" cy="17" r="7" fill="#f3d2c4"/><circle cx="45" cy="17" r="7" fill="#f3d2c4"/><ellipse cx="32" cy="51" rx="13" ry="9" fill="#f3d2c4"/><circle cx="32" cy="30" r="15" fill="#f3d2c4"/><ellipse cx="32" cy="35" rx="6" ry="4.5" fill="${W}"/><g style="stroke:none" fill="#3d2a30"><circle cx="26" cy="28" r="1.8"/><circle cx="38" cy="28" r="1.8"/><circle cx="32" cy="33.5" r="1.6"/></g><circle cx="22" cy="34" r="2.4" fill="${P}" style="stroke:none"/><circle cx="42" cy="34" r="2.4" fill="${P}" style="stroke:none"/>`,
+  perfume:`<rect x="23" y="7" width="18" height="11" rx="3" fill="${W}"/><rect x="27" y="17" width="10" height="8" fill="${L}"/><rect x="14" y="24" width="36" height="32" rx="10" fill="${P}"/><path d="M22 32c0 6 0 12 4 16" class="nf" style="stroke:#fff;stroke-width:3"/><path d="M34 38c1-3 4-3 4 0 0-3 3-3 4 0 0 3-4 5-4 5s-4-2-4-5Z" fill="${W}"/>`,
+  notebook:`<rect x="15" y="9" width="36" height="47" rx="4" fill="${P}"/><path d="M22 9v47" class="nf"/><g class="nf"><path d="M12 16h6M12 24h6M12 32h6M12 40h6M12 48h6"/></g><path d="M30 30c1-4 6-4 6 0 0-4 5-4 6 0 0 4-6 7-6 7s-6-3-6-7Z" fill="${W}"/>`,
+  bracelet:`<ellipse cx="32" cy="28" rx="20" ry="14" class="nf"/><path d="M27 42c1-3 4-3 5 0 1-3 4-3 5 0 0 3-5 6-5 6s-5-3-5-6Z" fill="${P}"/><circle cx="16" cy="38" r="4" fill="${L}"/><path d="M48 36l2 3.5 4 .5-3 2.5 1 4-4-2-4 2 1-4-3-2.5 4-.5Z" fill="${Y}"/>`,
+  flowers:`<path d="M20 34l12 24 12-24Z" fill="${L}"/><path d="M26 34l-2-8M32 34V20M38 34l2-8" class="nf" style="stroke:#5f9a6a"/><g fill="${P}"><circle cx="22" cy="22" r="7"/><circle cx="42" cy="22" r="7"/><circle cx="32" cy="14" r="7"/></g><g fill="${Y}"><circle cx="22" cy="22" r="2.4"/><circle cx="42" cy="22" r="2.4"/><circle cx="32" cy="14" r="2.4"/></g>`,
+  berry: BERRY_S,
+  boba:`<path d="M18 22h28l-4 34H22Z" fill="${W}"/><path d="M19.5 34h25l-2.5 22H22Z" fill="#f3d2c4"/><rect x="15" y="17" width="34" height="6" rx="3" fill="${P}"/><path d="M36 17l6-12" class="nf" style="stroke-width:4"/><g style="stroke:none" fill="#5b3a42"><circle cx="27" cy="51" r="2.2"/><circle cx="33" cy="49" r="2.2"/><circle cx="38" cy="52" r="2.2"/><circle cx="30" cy="45" r="2.2"/></g>`,
+  phone:`<rect x="19" y="6" width="26" height="52" rx="7" fill="${P}"/><rect x="23" y="10" width="9" height="9" rx="3" fill="${W}"/><circle cx="27.5" cy="14.5" r="2" fill="${L}"/><path d="M27 34c1.5-4 7-4 7 0 0-4 5.5-4 7 0 0 4.5-7 8-7 8s-7-3.5-7-8Z" fill="${W}" transform="translate(-2.5 0)"/><path d="M44 46l2 4 4 .6-3 2.6.8 4-3.8-2-3.8 2 .8-4-3-2.6 4-.6Z" fill="${Y}"/>`,
+  scrunchie:`<circle cx="32" cy="32" r="21" fill="${P}"/><circle cx="32" cy="32" r="8" fill="${W}"/><path class="nf" d="M32 11v7M32 46v7M11 32h7M46 32h7M17 17l5 5M42 42l5 5M47 17l-5 5M17 47l5-5" style="stroke-width:1.8"/>`,
+  mug:`<path d="M26 6c-3 4 3 6 0 10M34 6c-3 4 3 6 0 10" class="nf" style="stroke:#c9a7b4"/><path d="M12 20h32v26a8 8 0 0 1-8 8H20a8 8 0 0 1-8-8Z" fill="${W}"/><path d="M44 26h4a7 7 0 0 1 0 14h-4" class="nf" style="stroke-width:3"/><path d="M22 34c1.5-4 7-4 7 0 0-4 5.5-4 7 0 0 4.5-7 8-7 8s-7-3.5-7-8Z" fill="${P}"/>`,
+  mirror:`<path d="M26 12c-6-6-12-2-8 2 3 3 8 2 14 2Zm12 0c6-6 12-2 8 2-3 3-8 2-14 2Z" fill="${L}"/><circle cx="32" cy="38" r="20" fill="${P}"/><circle cx="32" cy="38" r="13" fill="#eef4ff"/><path d="M26 34l5-5M27 42l10-10" class="nf" style="stroke:#fff;stroke-width:3"/>`,
+  earrings:`<circle cx="21" cy="22" r="9" class="nf"/><circle cx="43" cy="22" r="9" class="nf"/><path d="M21 31v6M43 31v6" class="nf"/><path d="M15 42c1.5-5 6-5 6 0 0-5 4.5-5 6 0 0 5-6 9-6 9s-6-4-6-9ZM37 42c1.5-5 6-5 6 0 0-5 4.5-5 6 0 0 5-6 9-6 9s-6-4-6-9Z" fill="${P}"/>`,
+  blanket:`<rect x="12" y="16" width="40" height="13" rx="5" fill="${P}"/><rect x="10" y="28" width="44" height="13" rx="5" fill="${L}"/><rect x="8" y="40" width="48" height="14" rx="5" fill="${W}"/><path d="M20 16v13M32 16v13M44 16v13" class="nf" style="stroke-width:1.4"/><path d="M50 47h6" class="nf"/>`,
+  jbox:`<rect x="12" y="28" width="40" height="26" rx="4" fill="${P}"/><path d="M10 29c0-14 44-14 44 0Z" fill="${L}"/><rect x="28" y="26" width="8" height="8" rx="2" fill="${Y}"/><path d="M26 42c1.5-4 7-4 7 0 0-4 5.5-4 7 0 0 4.5-7 8-7 8s-7-3.5-7-8Z" fill="${W}" transform="translate(-1.5 0)"/>`,
+  clip:`<rect x="12" y="18" width="40" height="13" rx="6.5" fill="${P}"/><path d="M17 31c0 10 3 16 5 19M25 31c0 10 2 17 3 21M32 31v22M39 31c0 10-1 17-3 21M47 31c0 10-3 16-5 19" class="nf"/><path d="M30 22c1-2 3-2 3 0 0-2 2-2 3 0 0 2-3 4-3 4s-3-2-3-4Z" fill="${W}"/>`,
+  cardigan:`<path d="M21 11l-11 8 5 10 6-3v28h22V26l6 3 5-10-11-8-7 16h-4Z" fill="#f3d2c4"/><path d="M28 27v27M36 27v27" class="nf"/><g style="stroke:none" fill="#c2416e"><circle cx="31" cy="33" r="1.5"/><circle cx="31" cy="41" r="1.5"/><circle cx="31" cy="49" r="1.5"/></g><path d="M15 22l-3 5M49 22l3 5" class="nf"/>`,
+  socks:`<path d="M16 8h14v26c0 3 2 5 5 6l5 2c5 3 4 12-3 12H22c-5 0-8-4-8-9Z" fill="${W}"/><path d="M16 8h14v7H16Z" fill="${P}"/><path d="M16 22h14v5H16Z" fill="${L}"/><path d="M34 8h12v24c0 3 2 5 4 6l2 1c4 3 3 11-3 11h-4" class="nf" style="stroke:#e8a3b7"/>`,
+  nails:`<rect x="24" y="5" width="16" height="17" rx="4" fill="${L}"/><rect x="27" y="21" width="10" height="9" fill="${W}"/><rect x="16" y="29" width="32" height="27" rx="9" fill="${P}"/><path d="M23 36c0 5 1 10 4 13" class="nf" style="stroke:#fff;stroke-width:3"/><path d="M52 10l1.6 3.4 3.4.6-2.6 2.2.8 3.6-3.2-1.8-3.2 1.8.8-3.6-2.6-2.2 3.4-.6Z" fill="${Y}"/>`,
+  bag:`<path d="M22 24c0-14 20-14 20 0" class="nf" style="stroke-width:3"/><path d="M12 24h40l-4 30H16Z" fill="${L}"/><path d="M12 24h40l-6 13H18Z" fill="${P}"/><circle cx="32" cy="37" r="3.5" fill="${Y}"/>`,
+  tickets:`<g transform="rotate(-12 32 32)"><path d="M8 20h48v7a5 5 0 0 0 0 10v7H8v-7a5 5 0 0 0 0-10Z" fill="${Y}"/><path d="M42 20v24" class="nf" style="stroke-dasharray:3 3"/><path d="M22 38V27l9-2v11" class="nf"/><circle cx="20" cy="38" r="2.6" fill="#c2416e"/><circle cx="29" cy="36" r="2.6" fill="#c2416e"/></g>`,
+  gift:`<rect x="12" y="28" width="40" height="27" rx="3" fill="${P}"/><rect x="9" y="20" width="46" height="10" rx="3" fill="${W}"/><path d="M32 20v35" class="nf" style="stroke-width:4;stroke:#c2416e"/><path d="M32 20c-6-10-16-8-14-2 2 4 10 3 14 2Zm0 0c6-10 16-8 14-2-2 4-10 3-14 2Z" fill="${L}"/>`
+};
+const doodle = (k, cls="dd") => `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true">${DOODLE[k] || DOODLE.gift}</svg>`;
+
+/* ---------- state ---------- */
+const state = Object.assign({ date:null, time:null, wishes:[], extra:"" }, ls.get("mimy-v2") || {});
+const save = () => ls.set("mimy-v2", state);
+
+/* ---------- static text ---------- */
+$("#sub").textContent = CONFIG.sub;
+const LT = $("#letter");
+LT.append(el("p", { className:"hi", textContent:`Hey ${CONFIG.nickname},` }));
+CONFIG.letter.forEach(t => LT.append(el("p", { textContent:t })));
+LT.append(el("p", { className:"from", textContent:"Lots of love, ♡" }));
+$("#foot").textContent = `see you on the ${parse(CONFIG.birthday).getDate()}th ♡`;
+
+const tick = '<svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 5c5-1 13-1 18 0 1 5 1 12 0 17-5 1-13 1-18 0-1-5-1-12 0-17Z"/><path d="M8 13l4 4 8-11" stroke-width="2.4"/></svg>';
+CONFIG.plan.forEach(([a,b]) => {
+  const li = el("li"); li.innerHTML = tick;
+  const d = el("div", { textContent:a }); d.append(el("small", { textContent:b }));
+  li.append(d); $("#plan").append(li);
+});
+
+$("#ps").innerHTML = doodle("camera");
+$("#ps").append("I'll bring my camera to capture you and our pretty day ♡");
+
+/* ---------- calendar ---------- */
+const free = new Set(CONFIG.free);
+const first = parse(CONFIG.free[0]), last = parse(CONFIG.free[CONFIG.free.length-1]);
+const lo = new Date(first.getFullYear(), first.getMonth(), 1), hi = new Date(last.getFullYear(), last.getMonth(), 1);
+let view = state.date ? parse(state.date) : parse(CONFIG.birthday); view = new Date(view.getFullYear(), view.getMonth(), 1);
+
+function renderCal(){
+  const g = $("#grid"); g.innerHTML = "";
+  $("#month").textContent = view.toLocaleDateString("en-GB", { month:"long", year:"numeric" });
+  $("#prev").disabled = view <= lo; $("#next").disabled = view >= hi;
+  ["M","T","W","T","F","S","S"].forEach(d => g.append(el("div", { className:"dow", textContent:d })));
+  const off = (view.getDay()+6)%7;
+  for(let i=0;i<off;i++) g.append(el("div"));
+  const n = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate(), today = key(new Date());
+  for(let d=1; d<=n; d++){
+    const k = key(new Date(view.getFullYear(), view.getMonth(), d));
+    const ok = free.has(k) && k >= today;
+    const b = el("button", { type:"button", className:"day" });
+    b.innerHTML = `<span>${d}</span>`;
+    b.disabled = !ok;
+    if(k === CONFIG.birthday) b.classList.add("bd");
+    if(ok){
+      b.classList.add("free");
+      b.insertAdjacentHTML("afterbegin", `<svg class="ring" viewBox="0 0 60 48" style="transform:rotate(${(d*37)%20-10}deg)" aria-hidden="true"><path d="${RING[d%3]}"/></svg>`);
+      b.setAttribute("aria-label", long(k) + (k===CONFIG.birthday ? ", your birthday" : ""));
+      b.setAttribute("aria-pressed", String(k === state.date));
+      if(k === state.date) b.classList.add("picked");
+      b.onclick = () => { state.date = k; save(); renderCal(); renderChoice(); };
+    }
+    g.append(b);
+  }
+}
+$("#prev").onclick = () => { view = new Date(view.getFullYear(), view.getMonth()-1, 1); renderCal(); };
+$("#next").onclick = () => { view = new Date(view.getFullYear(), view.getMonth()+1, 1); renderCal(); };
+
+function renderChoice(){
+  const c = $("#choice"); c.innerHTML = "";
+  if(!state.date){ c.textContent = "No day picked yet."; return; }
+  c.append("You picked ", el("b", { textContent: long(state.date) }));
+  if(state.date === CONFIG.birthday) c.append(" — the actual day!");
+  if(state.time) c.append(el("br"), state.time.toLowerCase());
+}
+function renderTimes(){
+  const t = $("#times"); t.innerHTML = "";
+  CONFIG.times.forEach(x => {
+    const lab = el("label"), r = el("input", { type:"radio", name:"time", value:x, checked: state.time === x });
+    r.onchange = () => { state.time = x; save(); renderChoice(); };
+    lab.append(r, x); t.append(lab);
+  });
+}
+
+/* ---------- wishlist ---------- */
+const has = t => state.wishes.some(w => w.text.toLowerCase() === t.toLowerCase());
+function addWish(t, icon="gift"){
+  t = t.trim(); if(!t || has(t)) return;
+  if(state.wishes.length >= 40) return;
+  state.wishes.push({ text:t, hearts:1, icon }); save(); renderWishes(); renderIdeas();
+}
+function removeWish(t){ state.wishes = state.wishes.filter(w => w.text.toLowerCase() !== t.toLowerCase()); save(); renderWishes(); renderIdeas(); }
+function renderIdeas(){
+  const g = $("#stickers"); g.innerHTML = "";
+  CONFIG.ideas.forEach(([label, icon], n) => {
+    const on = has(label);
+    const b = el("button", { type:"button", className:"stk" + (on ? " on" : "") });
+    b.style.transform = `rotate(${[-3,2,-1,3,-2,1][n%6]}deg)`;
+    b.innerHTML = doodle(icon);
+    b.append(el("span", { textContent:label }));
+    b.setAttribute("aria-pressed", String(on));
+    b.setAttribute("aria-label", (on ? "Remove " : "Add ") + label);
+    b.onclick = () => on ? removeWish(label) : addWish(label, icon);
+    g.append(b);
+  });
+}
+function renderWishes(){
+  const u = $("#wishes"); u.innerHTML = "";
+  if(!state.wishes.length){ u.append(el("li", { className:"none", textContent:"nothing yet" })); return; }
+  state.wishes.forEach(w => {
+    const li = el("li"); li.insertAdjacentHTML("beforeend", doodle(w.icon, "dd ic")); li.append(el("span", { className:"t", textContent:w.text }));
+    const h = el("span", { className:"hearts" }); h.setAttribute("role","group"); h.setAttribute("aria-label", `How much you want ${w.text}`);
+    [1,2,3].forEach(n => {
+      const b = el("button", { type:"button", className: n <= w.hearts ? "on" : "" });
+      b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${heartPath}"/></svg>`;
+      b.setAttribute("aria-label", `${n} of 3`); b.setAttribute("aria-pressed", String(n <= w.hearts));
+      b.onclick = () => { w.hearts = n; save(); renderWishes(); };
+      h.append(b);
+    });
+    const x = el("button", { type:"button", className:"x", textContent:"×" }); x.setAttribute("aria-label", "Remove " + w.text);
+    x.onclick = () => removeWish(w.text);
+    li.append(h, x); u.append(li);
+  });
+}
+$("#addBtn").onclick = () => { addWish($("#wishIn").value); $("#wishIn").value = ""; $("#wishIn").focus(); };
+$("#wishIn").addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); $("#addBtn").click(); } });
+$("#extra").value = state.extra || "";
+$("#extra").addEventListener("input", e => { state.extra = e.target.value; save(); });
+
+/* ---------- sending ---------- */
+let db = null, me = null, canWrite = true;
+function summary(){
+  const out = [`Day: ${state.date ? long(state.date) : "not picked"}${state.time ? ", " + state.time.toLowerCase() : ""}`, "", "Wishes:"];
+  [...state.wishes].sort((a,b) => b.hearts - a.hearts).forEach(w => out.push(`${"♥".repeat(w.hearts)} ${w.text}`));
+  if(!state.wishes.length) out.push("(none yet)");
+  if(state.extra.trim()) out.push("", state.extra.trim());
+  return out.join("\n");
+}
+$("#sendBtn").onclick = async () => {
+  const note = $("#sendNote");
+  if(!state.date){ note.textContent = "Pick a day first."; note.className = "note warn"; $("#dayH").scrollIntoView({ behavior:"smooth" }); return; }
+  note.textContent = ""; note.className = "note";
+  const btn = $("#sendBtn"); btn.disabled = true; btn.textContent = "Sending…";
+  let ok = false;
+  if(db && me && canWrite){
+    const body = JSON.parse(JSON.stringify({ ...state, updatedAt:new Date().toISOString() }));
+    for(let i=0;i<2 && !ok;i++){
+      try{ await db.doc("rsvp/" + me).set(body); ok = true; }
+      catch(e){ if(e && e.code === "invalid_argument"){ canWrite = false; break; } if(!e || e.code !== "unavailable") break; await new Promise(r => setTimeout(r, 700 + Math.random()*600)); }
+    }
+  }
+  btn.disabled = false; btn.textContent = ok ? "Send again" : "Send to me";
+  $("#doneTitle").textContent = ok ? "Sent ♡" : "Almost there";
+  $("#doneMsg").textContent = ok ? "I'll see it straight away. Come back and change anything whenever you like."
+                                 : "Copy this and send it to me in a message.";
+  $("#summary").textContent = summary();
+  $("#done").classList.add("show");
+  $("#done").scrollIntoView({ behavior:"smooth", block:"nearest" });
+};
+$("#copyBtn").onclick = async () => {
+  try{ await navigator.clipboard.writeText(summary()); $("#copyBtn").textContent = "Copied"; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($("#summary")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("#copyBtn").textContent = "Selected — press Ctrl/Cmd + C"; }
+};
+
+/* ---------- owner view ---------- */
+function renderResp(snap){
+  const box = $("#resp"); box.innerHTML = "";
+  if(snap.empty){ box.textContent = "Nothing yet. Send her the link."; return; }
+  snap.docs.forEach(d => {
+    const r = d.data() || {}, wrap = el("div", { className:"resp" }), dl = el("dl");
+    const row = (a,b) => { if(b) dl.append(el("dt", { textContent:a }), el("dd", { textContent:b })); };
+    row("Day", r.date ? long(String(r.date)) + (r.time ? ", " + String(r.time).toLowerCase() : "") : "not picked");
+    const w = Array.isArray(r.wishes) ? [...r.wishes].sort((a,b) => (b.hearts||0)-(a.hearts||0)) : [];
+    row("Wishes", w.length ? w.map(x => `${"♥".repeat(Math.max(1,Math.min(3,x.hearts||1)))} ${x.text}`).join("\n") : "none");
+    row("Notes", typeof r.extra === "string" ? r.extra : "");
+    row("Updated", r.updatedAt ? new Date(String(r.updatedAt)).toLocaleString("en-GB") : "");
+    wrap.append(dl); box.append(wrap);
+  });
+}
+(async () => {
+  if(!window.claude || typeof window.claude.use !== "function") return;
+  try{
+    const [d, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    db = d;
+    if(user){ me = await user.id(); if(await user.can("data.write") === false) canWrite = false; }
+    if(!db) return;
+    if(me){
+      try{
+        const s = await db.doc("rsvp/" + me).get();
+        if(s.exists){
+          const r = s.data();
+          if(typeof r.date === "string") state.date = r.date;
+          if(typeof r.time === "string") state.time = r.time;
+          if(typeof r.extra === "string") state.extra = r.extra;
+          if(Array.isArray(r.wishes)) state.wishes = r.wishes.filter(w => w && w.text).map(w => ({ text:String(w.text), hearts:Math.max(1,Math.min(3,Number(w.hearts)||1)), icon: DOODLE[w.icon] ? w.icon : "gift" }));
+          save(); $("#extra").value = state.extra; renderAll();
+        }
+      }catch(e){}
+    }
+    if(user && await user.isOwner()){
+      $("#owner").classList.add("show");
+      const t = setTimeout(() => { $("#resp").textContent = "Can't load her answers right now. Try again in a bit."; }, 10000);
+      db.collection("rsvp").onSnapshot(s => { if(!s.metadata.fromCache) clearTimeout(t); renderResp(s); },
+        () => { clearTimeout(t); $("#resp").textContent = "Can't load her answers right now. Try again in a bit."; });
+    }
+  }catch(e){}
+})();
+
+/* ---------- surprise ---------- */
+const HEART = (f) => `<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" fill="${f}" stroke="#c2416e" stroke-width="1.4"/></svg>`;
+const STAR = (f) => `<svg viewBox="0 0 24 24"><path d="M12 2l2.6 6.6L21 9l-5 4.6L17.4 21 12 17.4 6.6 21 8 13.6 3 9l6.4-.4Z" fill="${f}" stroke="#c2416e" stroke-width="1.3" stroke-linejoin="round"/></svg>`;
+const SPARK = `<svg viewBox="0 0 24 24"><path d="M12 1c1 7 4 10 11 11-7 1-10 4-11 11-1-7-4-10-11-11 7-1 10-4 11-11Z" fill="#fff"/></svg>`;
+const BERRY = `<svg viewBox="0 0 64 64" class="dd">${BERRY_S}</svg>`;
+const BALLOON = (f) => `<svg viewBox="0 0 30 60"><path d="M15 34c-3 8 3 14 0 24" fill="none" stroke="#c2416e" stroke-width="1.2"/><ellipse cx="15" cy="17" rx="12" ry="15" fill="${f}" stroke="#c2416e" stroke-width="1.4"/><path d="M13 32h4l-2 3Z" fill="${f}" stroke="#c2416e" stroke-width="1"/></svg>`;
+
+(function intro(){
+  const box = $("#intro"), still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let done = false;
+  const BITS = [HEART("#f08aa0"), HEART("#fff"), STAR("#ffe08f"), BERRY, HEART("#ddd2f7")];
+  function float(){
+    if(still) return;
+    for(let i=0;i<34;i++){
+      const b = el("div", { className:"bit", innerHTML: BITS[i % BITS.length] });
+      b.style.left = (Math.random()*100) + "vw";
+      b.style.setProperty("--w", (16 + Math.random()*20) + "px");
+      b.style.setProperty("--t", (3 + Math.random()*2) + "s");
+      b.style.setProperty("--d", (.6 + Math.random()*1.4) + "s");
+      b.style.setProperty("--x", ((Math.random()-.5)*140) + "px");
+      b.style.setProperty("--r", ((Math.random()-.5)*120) + "deg");
+      document.body.append(b); setTimeout(() => b.remove(), 7000);
+    }
+  }
+  function open(){
+    if(done) return; done = true;
+    box.classList.add("out"); $("#introHint").textContent = "";
+    float();
+    setTimeout(() => { const m = $("#introMsg"); m.className = "msg big"; m.textContent = "A day out, just for you ♡"; }, still ? 0 : 900);
+    setTimeout(() => { box.classList.add("lift"); document.body.classList.remove("locked"); $(".name").classList.add("hello"); }, still ? 1200 : 3400);
+    setTimeout(() => box.remove(), still ? 1300 : 4500);
+  }
+  box.addEventListener("click", open);
+  document.addEventListener("keydown", e => { if(!done && e.key === "Escape") open(); });
+})();
+
+/* ---------- background doodles ---------- */
+(function ambient(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const amb = $("#amb");
+  const spots = [
+    [3,14,HEART("#fff"),26],[93,10,SPARK,18,"tw"],[6,38,BERRY,34],[90,30,HEART("#f6c2d0"),22],
+    [2,62,SPARK,16,"tw"],[94,55,STAR("#ffe08f"),22],[5,84,HEART("#ddd2f7"),24],[91,78,BERRY,30],
+    [48,6,SPARK,14,"tw"],[88,92,SPARK,16,"tw"],[12,95,STAR("#fff"),18],[70,18,SPARK,12,"tw"]
+  ];
+  spots.forEach(([x,y,svg,w,cls], n) => {
+    const i = el("i", { innerHTML:svg }); if(cls) i.className = cls;
+    i.style.left = x + "vw"; i.style.top = y + "vh";
+    i.style.setProperty("--w", w + "px");
+    i.style.setProperty("--t", (cls ? 2.2 + (n%3)*.7 : 4.5 + (n%4)*1.1) + "s");
+    i.style.setProperty("--d", (-(n*0.9)) + "s");
+    i.style.setProperty("--r", (6 + n%3*3) + "deg");
+    amb.append(i);
+  });
+  [["#f6c2d0",12,0],["#ddd2f7",84,-9],["#ffe08f",30,-17]].forEach(([c,x,d]) => {
+    const i = el("i", { className:"drift", innerHTML:BALLOON(c) });
+    i.style.left = x + "vw"; i.style.setProperty("--w","28px");
+    i.style.setProperty("--t","26s"); i.style.setProperty("--d", d + "s");
+    amb.append(i);
+  });
+})();
+
+function renderAll(){ renderCal(); renderChoice(); renderTimes(); renderIdeas(); renderWishes(); }
+renderAll();
+</script>
+</body>
+</html>
